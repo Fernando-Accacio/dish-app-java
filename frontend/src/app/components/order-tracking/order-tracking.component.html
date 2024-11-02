@@ -2,10 +2,10 @@
 
 <div class="tracking-container">
     <div class="order-header">
-      <h1>Order Status</h1>
+      <h1>Status do pedido</h1>
       <div *ngIf="orderDetails" class="order-info">
-        <p class="order-number">Order #{{orderDetails.id}}</p>
-        <p class="estimated-delivery">Estimated Delivery: {{getEstimatedDeliveryTime()}}</p>
+        <p class="order-number">Status #{{orderDetails.id}}</p>
+        <p class="estimated-delivery">Entrega estimada: {{getEstimatedDeliveryTime()}}</p>
       </div>
     </div>
   
@@ -31,17 +31,17 @@
     </div>
   
     <div *ngIf="orderDetails" class="order-details">
-      <h2>Order Details</h2>
+      <h2>Detalhes do pedido</h2>
       <div class="details-grid">
         <div class="details-section">
-          <h3>Delivery Address</h3>
+          <h3>Endereço:</h3>
           <p>{{orderDetails.customerName}}</p>
           <p>{{orderDetails.address}}</p>
-          <p>Phone: {{orderDetails.phone}}</p>
+          <p>Telefone: {{orderDetails.phone}}</p>
         </div>
   
         <div class="details-section">
-          <h3>Order Summary</h3>
+          <h3>Resumo do pedido</h3>
           <div class="order-items">
             <div *ngFor="let item of orderDetails.items" class="order-item">
               <span>{{item.name}} x {{item.quantity}}</span>
@@ -55,9 +55,9 @@
         </div>
   
         <div class="details-section">
-          <h3>Payment</h3>
-          <p>Method: {{orderDetails.paymentMethod}}</p>
-          <p>Status: Paid</p>
+          <h3>Pagamento</h3>
+          <p>Método: {{orderDetails.paymentMethod}}</p>
+          <p>Status: Pago</p>
         </div>
       </div>
     </div>

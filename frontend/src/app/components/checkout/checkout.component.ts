@@ -14,7 +14,7 @@ interface OrderInfo {
   customerName: string;
   address: string;
   phone: string;
-  paymentMethod: 'cash' | 'credit' | 'debit';
+  paymentMethod: 'dinheiro' | 'credito' | 'debito';
   note: string;
 }
 
@@ -33,7 +33,7 @@ export class CheckoutComponent implements OnInit {
     customerName: '',
     address: '',
     phone: '',
-    paymentMethod: 'credit',
+    paymentMethod: 'credito',
     note: ''
   };
 

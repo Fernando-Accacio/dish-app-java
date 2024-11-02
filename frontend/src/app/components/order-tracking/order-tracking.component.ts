@@ -37,29 +37,29 @@ export class OrderTrackingComponent implements OnInit {
   orderStatuses: OrderStatus[] = [
     {
       step: 1,
-      title: 'Order Confirmed',
-      description: 'Your order has been received and confirmed',
+      title: 'Pedido confirmado',
+      description: 'Seu pedido foi recebido e confirmado.',
       timestamp: new Date(),
       completed: true
     },
     {
       step: 2,
-      title: 'Preparing',
-      description: 'Your order is being prepared in the kitchen',
+      title: 'Preparando',
+      description: 'Seu pedido está sendo preparado na cozinha',
       timestamp: new Date(Date.now() + 5 * 60000), // +5 minutes
       completed: false
     },
     {
       step: 3,
-      title: 'Out for Delivery',
-      description: 'Your order is on its way',
+      title: 'Saiu para entrega',
+      description: 'Seu pedido está na rota pra entrega',
       timestamp: new Date(Date.now() + 15 * 60000), // +15 minutes
       completed: false
     },
     {
       step: 4,
-      title: 'Delivered',
-      description: 'Enjoy your meal!',
+      title: 'Entrega',
+      description: 'Aproveite seu pedido',
       timestamp: new Date(Date.now() + 30 * 60000), // +30 minutes
       completed: false
     }
