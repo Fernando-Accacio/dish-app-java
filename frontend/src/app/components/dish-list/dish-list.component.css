@@ -4,6 +4,51 @@
     padding: 20px;
 }
 
+
+table tr th{
+    padding: 20px;
+}
+
+table tr td{
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+}
+
+.delete{
+    background-color: rgb(238, 96, 96);
+}
+
+.edit{
+    display: block;
+    cursor: pointer;
+    background-color: rgb(98, 98, 240);
+    border: none;
+    margin: 20px 0;
+    text-decoration: none;
+    color: black;
+    padding: 5px 20px;
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+
+.newDish{
+    display: block;
+    cursor: pointer;
+    background-color: #4CAF50;
+    border: none;
+    text-align: center;
+    margin: 20px 0;
+    text-decoration: none;
+    color: black;
+    padding: 5px 20px;
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    transition: background-color 0.3s ease; 
+}
+
 .cart-items {
     margin-bottom: 20px;
 }

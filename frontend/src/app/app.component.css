@@ -27,6 +27,8 @@
 
 .header .logo {
     width: 120px;
+    font-weight: bold;
+    text-align: center;
     margin: 0 auto;
 }
 

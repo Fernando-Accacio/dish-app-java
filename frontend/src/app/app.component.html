@@ -1,20 +1,16 @@
-
-<router-outlet />
-
 <div class="app-container">
     <header class="header">
-        <button class="back-btn">
+        <button class="back-btn" (click)="goBack()" *ngIf="canGoBack()">
             <i class="fas fa-arrow-left"></i>
         </button>
-        <img src="assets/images/los-gourmet-logo.png" alt="Los Gourmet" class="logo">
+        <p class="logo">Los Goumert</p>
     </header>
 
     <div class="status-bar">
-        INICIANDO CAIXA DA CATARINA
+        INICIANDO CAIXA 
     </div>
 
     <main class="main-content">
-        <!-- Router outlet or main content will be injected here -->
         <router-outlet></router-outlet>
     </main>
 </div>

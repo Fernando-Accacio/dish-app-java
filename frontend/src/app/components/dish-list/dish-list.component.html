@@ -1,6 +1,7 @@
 <!-- src/app/components/dish-list/dish-list.component.html -->
 
 <h2>Dish List</h2>
+<div>
 <table>
   <tr>
     <th>ID</th>
@@ -15,52 +16,11 @@
     <td>{{ dish.description }}</td>
     <td>{{ dish.price }}</td>
     <td>
-      <button (click)="deleteDish(dish.id!)">Delete</button>
-      <a [routerLink]="['/edit-dish', dish.id]">Edit</a>
+      <button class="delete" (click)="deleteDish(dish.id!)">Delete</button>
+      <a class="edit" [routerLink]="['/edit-dish', dish.id]">Edit</a>
     </td>
   </tr>
 </table>
-<a routerLink="/add-dish">Add New Dish</a>
+<a class="newDish" routerLink="/add-dish">NOVO ITEM</a>
 
-<div class="dish-list-container">
-  <header class="header">
-      <button class="back-btn">
-          <i class="fas fa-arrow-left"></i>
-      </button>
-      <img src="/backend/src/assets/images/los-gourmet-logo.png" alt="Los Gourmet" class="logo">
-      <div class="status-bar">INICIANDO CAIXA DA CATARINA</div>
-  </header>
-
-  <div class="cart-items">
-      <div class="cart-item">
-          <img src="/backend/src/assets/images/hamburger.png" alt="Hamburger" class="item-image">
-          <div class="item-details">
-              <h3>Hamburger</h3>
-              <p class="price">R$ 18.90</p>
-          </div>
-          <button class="add-to-cart">Adicionar</button>
-      </div>
-
-      <div class="cart-item">
-          <img src="/backend/src/assets/images/chopp.png" alt="Chopp" class="item-image">
-          <div class="item-details">
-              <h3>Chopp 02 Un</h3>
-              <p class="price">R$ 18.00</p>
-          </div>
-          <button class="add-to-cart">Adicionar</button>
-      </div>
-
-      <div class="cart-item">
-          <img src="/backend/src/assets/images/batata.png" alt="Porção de Batata" class="item-image">
-          <div class="item-details">
-              <h3>Porção de Batata</h3>
-              <p class="price">R$ 16.90</p>
-          </div>
-          <button class="add-to-cart">Adicionar</button>
-      </div>
-  </div>
-
-  <div class="cart-total">
-      <p>Total: R$ 38.90</p>
-  </div>
 </div>

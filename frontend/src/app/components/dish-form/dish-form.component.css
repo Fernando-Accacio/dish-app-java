@@ -12,6 +12,11 @@
     margin-bottom: 20px;
 }
 
+.adicionar{
+    text-transform: uppercase;
+    background-color: #4CAF50;
+}
+
 .back-btn {
     background: none;
     border: none;
