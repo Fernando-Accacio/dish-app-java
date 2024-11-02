@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DishService, Dish } from '../../services/dish.service';
+import { Router } from '@angular/router';
 
 interface CartItem extends Dish {
   quantity: number;
 }
+
 
 @Component({
   selector: 'app-dish-store',
@@ -18,7 +20,7 @@ export class DishStoreComponent implements OnInit {
   cart: CartItem[] = [];
   totalAmount: number = 0;
 
-  constructor(private dishService: DishService) {}
+  constructor(private dishService: DishService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadDishes();
@@ -61,10 +63,10 @@ export class DishStoreComponent implements OnInit {
   }
 
   checkout(): void {
-    // Implement checkout logic here
-    console.log('Checkout:', this.cart);
-    // You could add API call to process order
-    this.cart = [];
-    this.totalAmount = 0;
+    // Salvar o carrinho no localStorage
+    localStorage.setItem('cart', JSON.stringify(this.cart));
+    
+    // Navegar para a página de checkout
+    this.router.navigate(['/finalizado']);
   }
 }

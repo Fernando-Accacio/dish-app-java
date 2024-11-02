@@ -1,0 +1,68 @@
+<!-- src/app/components/order-tracking/order-tracking.component.html -->
+
+<div class="tracking-container">
+    <div class="order-header">
+      <h1>Order Status</h1>
+      <div *ngIf="orderDetails" class="order-info">
+        <p class="order-number">Order #{{orderDetails.id}}</p>
+        <p class="estimated-delivery">Estimated Delivery: {{getEstimatedDeliveryTime()}}</p>
+      </div>
+    </div>
+  
+    <div class="status-timeline">
+      <div *ngFor="let status of orderStatuses; let last = last" 
+           class="status-item"
+           [class.completed]="status.completed">
+        
+        <div class="status-indicator">
+          <div class="status-circle">
+            <i *ngIf="status.completed" class="check-icon">✓</i>
+          </div>
+          <div *ngIf="!last" class="status-line" 
+               [class.completed]="status.completed"></div>
+        </div>
+  
+        <div class="status-content">
+          <h3>{{status.title}}</h3>
+          <p>{{status.description}}</p>
+          <small>{{status.timestamp | date:'shortTime'}}</small>
+        </div>
+      </div>
+    </div>
+  
+    <div *ngIf="orderDetails" class="order-details">
+      <h2>Order Details</h2>
+      <div class="details-grid">
+        <div class="details-section">
+          <h3>Delivery Address</h3>
+          <p>{{orderDetails.customerName}}</p>
+          <p>{{orderDetails.address}}</p>
+          <p>Phone: {{orderDetails.phone}}</p>
+        </div>
+  
+        <div class="details-section">
+          <h3>Order Summary</h3>
+          <div class="order-items">
+            <div *ngFor="let item of orderDetails.items" class="order-item">
+              <span>{{item.name}} x {{item.quantity}}</span>
+              <span>R$ {{(item.price * item.quantity).toFixed(2)}}</span>
+            </div>
+          </div>
+          <div class="order-total">
+            <strong>Total:</strong>
+            <strong>R$ {{orderDetails.total.toFixed(2)}}</strong>
+          </div>
+        </div>
+  
+        <div class="details-section">
+          <h3>Payment</h3>
+          <p>Method: {{orderDetails.paymentMethod}}</p>
+          <p>Status: Paid</p>
+        </div>
+      </div>
+    </div>
+  
+    <div class="actions">
+      <button class="back-button" (click)="backToStore()">Back to Store</button>
+    </div>
+  </div>
