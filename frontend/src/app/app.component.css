@@ -23,6 +23,7 @@
     position: sticky;
     top: 0;
     z-index: 100;
+    flex-direction: column;
 }
 
 .header .logo {
@@ -30,6 +31,32 @@
     font-weight: bold;
     text-align: center;
     margin: 0 auto;
+    color: white;
+}
+
+.nav-container {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.nav-button {
+    background: none;
+    border: 1px solid white;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.nav-button:hover, .nav-button.active {
+    background-color: white;
+    color: var(--primary-color);
 }
 
 .back-btn {

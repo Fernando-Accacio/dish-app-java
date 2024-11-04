@@ -63,7 +63,7 @@ export class CheckoutComponent implements OnInit {
       items: this.cartItems,
       total: this.totalAmount,
       ...this.orderInfo,
-      status: 'confirmed',
+      status: 'confirmado',
       createdAt: new Date(),
       estimatedDelivery: new Date(Date.now() + 30 * 60000) // +30 minutos
     };

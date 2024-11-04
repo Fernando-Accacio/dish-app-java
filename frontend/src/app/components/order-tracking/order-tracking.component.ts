@@ -98,7 +98,7 @@ export class OrderTrackingComponent implements OnInit {
   }
 
   getCurrentStatus(): string {
-    if (!this.orderDetails) return 'No order found';
+    if (!this.orderDetails) return 'Nenhum pedido encontrado';
     
     const currentStatus = this.orderStatuses.find(status => !status.completed);
     return currentStatus ? currentStatus.title : 'Delivered';

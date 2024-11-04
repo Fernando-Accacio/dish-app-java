@@ -103,13 +103,14 @@
   .details-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    margin-top: 1.5rem;
+    gap: 1rem;
+    margin-top: 0.1rem;
   }
   
   .details-section h3 {
     color: #2d3748;
-    margin-bottom: 1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.2rem;
   }
   
   .order-items {
@@ -124,9 +125,6 @@
   }
   
   .order-total {
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 2px solid #e2e8f0;
     display: flex;
     justify-content: space-between;
   }
