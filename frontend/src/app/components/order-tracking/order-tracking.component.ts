@@ -1,27 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-
-interface OrderStatus {
-  step: number;
-  title: string;
-  description: string;
-  timestamp: Date;
-  completed: boolean;
-}
-
-interface OrderDetails {
-  id: string;
-  items: any[];
-  total: number;
-  customerName: string;
-  address: string;
-  phone: string;
-  paymentMethod: string;
-  status: string;
-  createdAt: Date;
-  estimatedDelivery?: Date;
-}
+import { Order, OrderService } from '../../services/order.service';
+import { interval, Subscription, switchMap } from 'rxjs';
+import { AuthenticateService } from '../../services/auth/authenticate.service';
 
 @Component({
   selector: 'app-order-tracking',
@@ -31,88 +13,83 @@ interface OrderDetails {
   imports: [CommonModule]
 })
 export class OrderTrackingComponent implements OnInit {
-  orderId: string = '';
-  orderDetails: OrderDetails | null = null;
-  
-  orderStatuses: OrderStatus[] = [
-    {
-      step: 1,
-      title: 'Pedido confirmado',
-      description: 'Seu pedido foi recebido e confirmado.',
-      timestamp: new Date(),
-      completed: true
-    },
-    {
-      step: 2,
-      title: 'Preparando',
-      description: 'Seu pedido está sendo preparado na cozinha',
-      timestamp: new Date(Date.now() + 5 * 60000), // +5 minutes
-      completed: false
-    },
-    {
-      step: 3,
-      title: 'Saiu para entrega',
-      description: 'Seu pedido está na rota pra entrega',
-      timestamp: new Date(Date.now() + 15 * 60000), // +15 minutes
-      completed: false
-    },
-    {
-      step: 4,
-      title: 'Entrega',
-      description: 'Aproveite seu pedido',
-      timestamp: new Date(Date.now() + 30 * 60000), // +30 minutes
-      completed: false
-    }
+  orderId: number = 0;
+  emailUser: string = '';
+  orderDetails: Order | null = null;
+  orderStatuses = [
+    { step: 1, title: 'Pedido confirmado', description: 'Seu pedido foi recebido e confirmado.', completed: false },
+    { step: 2, title: 'Preparando', description: 'Seu pedido está sendo preparado na cozinha.', completed: false },
+    { step: 3, title: 'Saiu para entrega', description: 'Seu pedido está na rota para entrega.', completed: false },
+    { step: 4, title: 'Entrega', description: 'Aproveite seu pedido.', completed: false }
   ];
+
+  private updateSubscription: Subscription | null = null;
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router
-  ) {}
+    private router: Router,
+    private orderService: OrderService,
+    private authService: AuthenticateService
+  ) {
+    this.emailUser = this.authService.getEmail() || '';
+    this.getOrder(this.emailUser);
+  }
 
   ngOnInit(): void {
-    // Recuperar o pedido do localStorage (temporário - deve vir do backend)
-    const savedOrder = localStorage.getItem('lastOrder');
-    
-    if (savedOrder) {
-      try {
-        this.orderDetails = JSON.parse(savedOrder);
+    this.updateSubscription = interval(10000) // Atualiza a cada 10 segundos
+      .pipe(switchMap(() => this.orderService.getOrder(this.orderId, this.emailUser)))
+      .subscribe((order) => this.updateOrderStatus(order));
+  }
 
-        if (this.orderDetails && this.orderDetails.createdAt) {
-          // Simular status atual baseado no tempo desde a criação
-          const timeSinceOrder = Date.now() - new Date(this.orderDetails.createdAt).getTime();
-          const currentStep = Math.min(Math.floor(timeSinceOrder / (10 * 60000)) + 1, 4);
+  getOrder(email: string) {
+    this.orderService.getLastOrder(email).subscribe((order) => {
+      this.orderId = order.id || 0;
+      this.updateOrderStatus(order)
+    });
+  }
 
-          this.orderStatuses.forEach((status, index) => {
-            status.completed = index < currentStep;
-          });
-        }
-      } catch (error) {
-        console.error('Erro ao parsear o pedido:', error);
-        this.router.navigate(['/store']);
-      }
-    } else {
-      // Se não houver pedido, redirecionar para a loja
-      this.router.navigate(['/store']);
+  ngOnDestroy(): void {
+    if (this.updateSubscription) {
+      this.updateSubscription.unsubscribe();
     }
+  }
+
+  private updateOrderStatus(order: Order): void {
+    this.orderDetails = order;
+
+    // Atualiza os estados com base no status atual do pedido
+    const statusMap: { [key: string]: number } = {
+      PENDING: 1,
+      PREPARING: 2,
+      READY: 3,
+      DELIVERED: 4,
+      CANCELLED: 0
+    };
+
+    const currentStep = statusMap[order.status] || 0;
+
+    this.orderStatuses.forEach((status, index) => {
+      status.completed = index < currentStep;
+    });
   }
 
   getCurrentStatus(): string {
     if (!this.orderDetails) return 'Nenhum pedido encontrado';
-    
     const currentStatus = this.orderStatuses.find(status => !status.completed);
-    return currentStatus ? currentStatus.title : 'Delivered';
-  }
-
-  getEstimatedDeliveryTime(): string {
-    if (!this.orderDetails || !this.orderDetails.createdAt) return '';
-
-    const estimatedDelivery = new Date(this.orderDetails.createdAt);
-    estimatedDelivery.setMinutes(estimatedDelivery.getMinutes() + 30);
-    return estimatedDelivery.toLocaleTimeString();
+    return currentStatus ? currentStatus.title : 'Entrega finalizada';
   }
 
   backToStore(): void {
-    this.router.navigate(['/finalizado']);
+    this.router.navigate(['/store']);
+  }
+
+  getEstimatedDeliveryTime(): string {
+    const orderDate = new Date(this.orderDetails?.orderDate || '');
+    orderDate.setMinutes(orderDate.getMinutes() + 60);
+    orderDate.setSeconds(0, 0);
+    return orderDate.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
   }
 }

@@ -1,6 +1,6 @@
 <!-- src/app/components/dish-list/dish-list.component.html -->
 
-<h2>Dish List</h2>
+<h2>Pratos</h2>
 <div>
 <table>
   <tr>
@@ -14,10 +14,10 @@
     <td>{{ dish.id }}</td>
     <td>{{ dish.name }}</td>
     <td>{{ dish.description }}</td>
-    <td>{{ dish.price }}</td>
+    <td>R$ {{ dish.price.toFixed(2) }}</td>
     <td>
-      <button class="delete" (click)="deleteDish(dish.id!)">Delete</button>
-      <a class="edit" [routerLink]="['/edit-dish', dish.id]">Edit</a>
+      <button class="delete" (click)="deleteDish(dish.id!)">Deletar</button>
+      <a class="edit" [routerLink]="['/edit-dish', dish.id]">Editar</a>
     </td>
   </tr>
 </table>

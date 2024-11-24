@@ -70,6 +70,17 @@
     left: 10px;
 }
 
+.auth-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    padding: 10px;
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+}
+
 .status-bar {
     background-color: var(--danger-color);
     color: white;

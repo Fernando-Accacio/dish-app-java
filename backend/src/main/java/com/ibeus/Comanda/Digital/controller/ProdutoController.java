@@ -12,7 +12,7 @@ import jakarta.validation.Valid; // Se estiver usando Jakarta
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/produtos")
+@RequestMapping("produtos")
 public class ProdutoController {
 
     @Autowired
@@ -38,9 +38,38 @@ public class ProdutoController {
         }
     }
 
+    @PutMapping
+    public ResponseEntity<Produto> atualizarProduto(@Valid @RequestBody Produto produto) {
+        // Verifica se a categoria existe usando o ID
+        if (produto.getCategoria() == null || !categoriaService.existsById(produto.getCategoria().getId())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                 .body(null); // Ou pode retornar um objeto de erro
+        }
+
+        try {
+            Produto produtoSalvo = produtoService.atualizar(produto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(produtoSalvo);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                 .body(null); // Ou pode retornar um objeto de erro
+        }
+    }
+
     @GetMapping
     public ResponseEntity<List<Produto>> listarProdutos() {
         List<Produto> produtos = produtoService.listarTodos();
         return ResponseEntity.ok(produtos);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Produto> getById(@PathVariable Long id) {
+        Produto produto = produtoService.buscarPorId(id);
+        return ResponseEntity.ok(produto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        produtoService.deletar(id);
+        return ResponseEntity.noContent().build();
     }
 }

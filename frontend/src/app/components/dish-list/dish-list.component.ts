@@ -28,8 +28,16 @@ export class DishListComponent implements OnInit {
   }
 
   deleteDish(id: number) {
-    this.dishService.deleteDish(id).subscribe(() => {
-      this.loadDishes();
+    this.dishService.deleteDish(id).subscribe({
+      next: () => {
+        alert('Prato deletado com sucesso!');
+        this.loadDishes();
+      },
+      error: (error) => {
+        // Erro, exiba um alerta
+        alert('Não é possível excluir um prato vinculado a um pedido!');
+        console.error('Erro ao excluir o prato:', error);
+      },
     });
   }
 }

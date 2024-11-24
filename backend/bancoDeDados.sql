@@ -40,6 +40,9 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `status` varchar(255) DEFAULT NULL,
   `total_amount` double DEFAULT NULL,
   `user_id` bigint DEFAULT NULL,
+  `phone_number` varchar(255) DEFAULT NULL,
+  `payment_method` varchar(255) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK32ql8ubntj5uh44ph9659tiih` (`user_id`),
   CONSTRAINT `FK32ql8ubntj5uh44ph9659tiih` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
@@ -73,6 +76,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `role` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+INSERT INTO users VALUES (null,'admin@admin.com','administrador','admin','(11) 11223-4554','gerente');
 
 -- Copiando dados para a tabela comanda_digital.users: ~0 rows (aproximadamente)
 

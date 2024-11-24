@@ -1,12 +1,14 @@
 package com.ibeus.Comanda.Digital.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.ibeus.Comanda.Digital.model.User;
 import com.ibeus.Comanda.Digital.service.UserService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -27,8 +29,15 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.create(user);
+    public ResponseEntity<String> createUser(@RequestBody User user) {
+        User users = this.userService.findByEmail(user.getEmail());
+        if(users != null) {
+            return ResponseEntity.status(400).body("Esse email já existe!");
+        }
+        User res = userService.create(user); 
+        return res != null
+            ? ResponseEntity.status(HttpStatus.CREATED).body("Usuário criado com sucesso!") 
+            : ResponseEntity.status(400).body("Erro ao criar usuário!");
     }
 
     @PutMapping("/{id}")

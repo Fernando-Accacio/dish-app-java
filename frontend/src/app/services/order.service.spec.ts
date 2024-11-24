@@ -1,10 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { OrderService, Order, OrderItem } from './order.service';
+import { getUrl } from './config/env';
 
 describe('OrderService', () => {
   let service: OrderService;
   let httpMock: HttpTestingController;
+  const url = getUrl() + '/orders';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -45,7 +47,7 @@ describe('OrderService', () => {
       expect(orders).toEqual([mockOrder]);
     });
 
-    const req = httpMock.expectOne('http://localhost:8080/orders');
+    const req = httpMock.expectOne(url);
     expect(req.request.method).toBe('GET');
     req.flush([mockOrder]);
   });
@@ -55,7 +57,7 @@ describe('OrderService', () => {
       expect(order).toEqual(mockOrder);
     });
 
-    const req = httpMock.expectOne('http://localhost:8080/orders/1');
+    const req = httpMock.expectOne(url + '/orders/1');
     expect(req.request.method).toBe('GET');
     req.flush(mockOrder);
   });
@@ -71,7 +73,7 @@ describe('OrderService', () => {
       expect(order).toEqual(mockOrder);
     });
 
-    const req = httpMock.expectOne('http://localhost:8080/orders');
+    const req = httpMock.expectOne(url);
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(newOrder);
     req.flush(mockOrder);
@@ -87,7 +89,7 @@ describe('OrderService', () => {
       expect(order).toEqual(updatedOrder);
     });
 
-    const req = httpMock.expectOne('http://localhost:8080/orders/1');
+    const req = httpMock.expectOne(url + '/orders/1');
     expect(req.request.method).toBe('PUT');
     expect(req.request.body).toEqual(updatedOrder);
     req.flush(updatedOrder);
@@ -101,7 +103,7 @@ describe('OrderService', () => {
       expect(order).toEqual(updatedOrder);
     });
 
-    const req = httpMock.expectOne('http://localhost:8080/orders/1/status');
+    const req = httpMock.expectOne(url + '/orders/1/status');
     expect(req.request.method).toBe('PATCH');
     expect(req.request.body).toEqual({ status: newStatus });
     req.flush(updatedOrder);
@@ -112,7 +114,7 @@ describe('OrderService', () => {
       expect(order).toEqual(mockOrder);
     });
 
-    const req = httpMock.expectOne('http://localhost:8080/orders/1');
+    const req = httpMock.expectOne(url + '/orders/1');
     expect(req.request.method).toBe('DELETE');
     req.flush(mockOrder);
   });

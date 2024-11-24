@@ -40,11 +40,17 @@ export class DishFormComponent implements OnInit {
   saveDish() {
     if (this.isEdit) {
       this.dishService.updateDish(this.dish.id!, this.dish).subscribe(() => {
-        this.router.navigate(['/']);
+        this.router.navigate(['/gerente']);
+        setTimeout(() => {
+          alert('Prato atualizado com sucesso!');
+        }, 1000)
       });
     } else {
       this.dishService.createDish(this.dish).subscribe(() => {
-        this.router.navigate(['/']);
+        this.router.navigate(['/gerente']);
+        setTimeout(() => {
+          alert('Prato resgitrado com sucesso!');
+        }, 1000)
       });
     }
   }

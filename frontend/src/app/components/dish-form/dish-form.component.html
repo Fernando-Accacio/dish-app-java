@@ -1,6 +1,6 @@
 <!-- src/app/components/dish-form/dish-form.component.html -->
 
-<h2>{{ isEdit ? 'Edit Dish' : 'Add Dish' }}</h2>
+<h2>{{ isEdit ? 'Editar Prato' : 'Adicionar Prato' }}</h2>
 <div>
 <form (ngSubmit)="saveDish()">
   <label for="name">Nome:</label>
@@ -12,6 +12,6 @@
   <label for="price">Preço:</label>
   <input type="number" id="price" [(ngModel)]="dish.price" name="price" required>
 
-  <button class="adicionar" type="submit">{{ isEdit ? 'Update' : 'Add' }}</button>
+  <button class="adicionar" type="submit">{{ isEdit ? 'Atualizar' : 'Adicionar' }}</button>
 </form>
 </div>

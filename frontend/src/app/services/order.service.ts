@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { getUrl } from './config/env';
+import { User } from './user.service';
 
 export interface OrderItem {
   id?: number;
@@ -10,45 +12,78 @@ export interface OrderItem {
   price: number;
 }
 
+export type OrderStatus = "PENDING" | "PREPARING" | "READY" | "DELIVERED" | "CANCELLED";
+
 export interface Order {
   id?: number;
-  items: OrderItem[];
-  totalPrice: number;
-  status: 'PENDING' | 'PREPARING' | 'READY' | 'DELIVERED' | 'CANCELLED';
-  createdAt?: Date;
+  user: User;
+  items?: OrderItem[];
+  dishes: { id: number | undefined; name: string | undefined; price: number; quantity: number }[];
+  totalAmount: number;
+  status: OrderStatus;
+  orderDate?: string;
   updatedAt?: Date;
+  address: string;
+  phone: string;
+  paymentMethod: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
-  private apiUrl = 'http://localhost:8080/orders';
+  private url = '';
 
-  constructor(private http: HttpClient) {}
-
-  getOrders(): Observable<Order[]> {
-    return this.http.get<Order[]>(this.apiUrl);
+  constructor(private http: HttpClient) {
+    this.buildUrl();
   }
 
-  getOrder(id: number): Observable<Order> {
-    return this.http.get<Order>(`${this.apiUrl}/${id}`);
+  buildUrl() {
+    this.url = getUrl() + '/orders';
+  }
+
+  getOrders(email: string = ''): Observable<Order[]> {
+    this.url += email == '' ? '' : `/by-email/${email}`;
+    const res = this.http.get<Order[]>(this.url);
+    this.buildUrl();
+    return res;
+  }
+
+  getOrder(id: number, email:string = ''): Observable<Order> {
+    this.url += email == '' ? `/${id}` : `/${id}/${email}`;
+    const res = this.http.get<Order>(this.url);
+    this.buildUrl();
+    return res;
+  }
+
+  getLastOrder(email:string = ''): Observable<Order> {
+    const res = this.http.get<Order>(`${this.url}/last-order/${email}`);
+    this.buildUrl();
+    return res;
   }
 
   createOrder(order: Order): Observable<Order> {
-    return this.http.post<Order>(this.apiUrl, order);
+    const res = this.http.post<Order>(this.url, order);
+    this.buildUrl();
+    return res;
   }
 
   updateOrder(id: number, order: Order): Observable<Order> {
-    return this.http.put<Order>(`${this.apiUrl}/${id}`, order);
+    const res = this.http.put<Order>(`${this.url}/${id}`, order);
+    this.buildUrl();
+    return res;
   }
 
-  updateOrderStatus(id: number, status: Order['status']): Observable<Order> {
-    return this.http.patch<Order>(`${this.apiUrl}/${id}/status`, { status });
+  updateOrderStatus(id: number, status: OrderStatus): Observable<Order> {
+    const res = this.http.put<Order>(`${this.url}/${id}/status`, status );
+    this.buildUrl();
+    return res;
   }
 
   deleteOrder(id: number): Observable<Order> {
-    return this.http.delete<Order>(`${this.apiUrl}/${id}`);
+    const res = this.http.delete<Order>(`${this.url}/${id}`);
+    this.buildUrl();
+    return res;
   }
 
   // Método auxiliar para calcular o preço total do pedido

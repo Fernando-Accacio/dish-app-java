@@ -16,24 +16,47 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @GetMapping
+    @GetMapping()
     public List<Order> getAllOrders() {
-        return orderService.findAll();
+        return orderService.findAll("");
+    }
+
+    @GetMapping("/by-email/{email}")
+    public List<Order> getAllOrdersAuth(@PathVariable String email) {
+        return orderService.findAll(email);
     }
 
     @GetMapping("/{id}")
     public Order getOrderById(@PathVariable Long id) {
-        return orderService.findById(id);
+        return orderService.findById(id, "");
+    }
+
+    @GetMapping("/{id}/{email}")
+    public Order getOrderByIdAuth(@PathVariable Long id, @PathVariable String email) {
+        return orderService.findById(id, email);
+    }
+
+    @GetMapping("/last-order/{email}")
+    public Order getLastOrder(@PathVariable String email) {
+        return orderService.lastOrder(email);
     }
 
     @PostMapping
     public Order createOrder(@RequestBody Order order) {
-        return orderService.create(order);
+        Order savedOrder = orderService.create(order);
+        savedOrder.setUser(null);
+        return savedOrder;
     }
 
     @PutMapping("/{id}")
     public Order updateOrder(@PathVariable Long id, @RequestBody Order order) {
         return orderService.update(id, order);
+    }
+
+    @PutMapping("/{id}/status")
+    public ResponseEntity<Order> updateOrderStatus(@PathVariable Long id, @RequestBody String status) {
+        Order updatedOrder = orderService.updateStatus(id, status);
+        return ResponseEntity.ok(updatedOrder);
     }
 
     @DeleteMapping("/{id}")

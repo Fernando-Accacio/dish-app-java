@@ -4,6 +4,7 @@ import com.ibeus.Comanda.Digital.model.Categoria;
 import com.ibeus.Comanda.Digital.model.Produto;
 import com.ibeus.Comanda.Digital.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import jakarta.persistence.EntityNotFoundException; // Importação correta
@@ -33,7 +34,7 @@ public class ProdutoService {
     }
 
     public List<Produto> listarTodos() {
-        return produtoRepository.findAll();
+        return produtoRepository.findAll(Sort.by(Sort.Order.desc("id")));
     }
 
     public Produto buscarPorId(Long id) {

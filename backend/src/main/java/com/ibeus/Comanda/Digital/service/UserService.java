@@ -1,11 +1,14 @@
 package com.ibeus.Comanda.Digital.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import com.ibeus.Comanda.Digital.model.User;
 import com.ibeus.Comanda.Digital.repository.UserRepository;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -17,12 +20,28 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public Optional<User> findByEmailAndPassword(String email, String password) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new NoSuchElementException("Usuário não encontrado"));
+        if (password.equals(user.getPassword())) {  // Compara a senha criptografada
+            return Optional.of(user);  // Senha correta
+        }
+        return Optional.empty();    // Senha incorreta ou usuário não encontrado
+    }
+
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email).orElse(null);
+    }
+
     public User create(User user) {
+        try {
         return userRepository.save(user);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public User update(Long id, User userDetails) {

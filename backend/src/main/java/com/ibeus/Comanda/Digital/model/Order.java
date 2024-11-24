@@ -17,7 +17,7 @@ public class Order {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "order_dishes",
         joinColumns = @JoinColumn(name = "order_id"),
@@ -27,7 +27,15 @@ public class Order {
 
     private Double totalAmount;
 
-    private String status; // "PENDING", "PREPARING", "COMPLETED", etc.
+    private String address;
+
+    @Column(name = "phone_number")
+    private String phone;
+
+    @Column(name = "payment_method")
+    private String paymentMethod;
+
+    private String status = "pendente";
 
     private String orderDate;
 }
