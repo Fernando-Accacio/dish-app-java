@@ -77,8 +77,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-INSERT INTO users VALUES (null,'admin@admin.com','administrador','admin','(11) 11223-4554','gerente');
-
+INSERT INTO users (email, name, password, phone_number, role) VALUES ('admin@admin.com', 'administrador', 'admin', '(11) 11223-4554', 'gerente');
+INSERT INTO logs (description, created_at) VALUES ('User created', NOW());
 -- Copiando dados para a tabela comanda_digital.users: ~0 rows (aproximadamente)
 
 -- Copiando estrutura para tabela comanda_digital.usuarios
